@@ -1,0 +1,9 @@
+note over browser:
+When you write a note and then hit save note. It executes
+the javascript code in spa.js. The code adds the new note to the html 
+and then executes javascript code to send the note to the server. 
+end note: 
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa {data}
+server->browser: {"message":"note created"}
+

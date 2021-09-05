@@ -1,0 +1,27 @@
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server->browser: text/HTML Response
+
+note over browser:
+browser processes the html response
+end note
+
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-> browser: main.css
+browser-> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server-> browser: spa.js
+
+
+note over browser:
+browser runs the javascript
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-> browser: returns json data
+
+
+note over browser:
+When the server returns the data it triggers a state change which runs
+the javascript code in spa.js to update the html
+end note
