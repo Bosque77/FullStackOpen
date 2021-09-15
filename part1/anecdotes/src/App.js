@@ -16,7 +16,8 @@ const AnecdoteOfTheDay = ({anecdotes, voteArray}) => {
   return(
     <div>{anecdotes[max_index]}</div>
   )
- 
+
+  
 
 }
 
