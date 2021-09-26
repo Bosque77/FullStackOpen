@@ -9,7 +9,7 @@ const Person = ({ name, number}) => {
 
 }
 
-const Persons = ({ persons, setPersons,filtered_persons, search_criteria }) => {
+const Persons = ({ persons, setPersons,filtered_persons, search_criteria, setMessage, setErrorMessage }) => {
 
   const deleteEntry = (id, name) => {
 
@@ -19,11 +19,14 @@ const Persons = ({ persons, setPersons,filtered_persons, search_criteria }) => {
         .then( returned_data => {
           let new_persons = persons.filter(person => person.id !==id)
           setPersons(new_persons)
-        }
-
-         
-
-        )
+          setMessage(`${name} was deleted from the phonebook`)
+          setErrorMessage()
+        }).catch(error=>{
+          setMessage(`${name} was deleted from the phonebook`)
+          setErrorMessage()
+          let new_persons = persons.filter(person => person.id !==id)
+          setPersons(new_persons)
+        })
     }
   }
 

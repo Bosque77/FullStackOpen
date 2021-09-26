@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Persons from './Persons.js'
 import Filter from './Filter.js'
 import PersonForm from './PersonForm.js'
+import {NotificationMessage, ErrorMessage} from './Message.js'
 import axios from 'axios'
 
 
@@ -14,7 +15,8 @@ const App = () => {
   const [newPhone, setNewPhone] = useState('')
   const [search_criteria, setSearchCriteria] = useState('')
   const [filtered_persons, setFilteredPersons] = useState([...persons])
-
+  const [message, setMessage] = useState()
+  const [error_message, setErrorMessage] = useState()
 
   const hook = () => {
     console.log('effect')
@@ -30,13 +32,15 @@ const App = () => {
 
   return (
     <div>
+      <NotificationMessage message={message}/>
+      <ErrorMessage message={error_message}/>
       <h2>Phonebook</h2>
       <Filter search_criteria={search_criteria} persons={persons} setSearchCriteria={setSearchCriteria} setFilteredPersons={setFilteredPersons} />
       <br />
-      <PersonForm newName={newName} setNewName={setNewName} newPhone={newPhone} setNewPhone={setNewPhone} persons={persons} setPersons={setPersons} />
+      <PersonForm newName={newName} setNewName={setNewName} newPhone={newPhone} setNewPhone={setNewPhone} persons={persons} setPersons={setPersons} setMessage={setMessage} setErrorMessage={setErrorMessage}/>
       <h2>Numbers</h2>
       <ul>
-        <Persons persons={persons} setPersons={setPersons} filtered_persons={filtered_persons} search_criteria={search_criteria} />
+        <Persons persons={persons} setPersons={setPersons} filtered_persons={filtered_persons} search_criteria={search_criteria} setMessage={setMessage} setErrorMessage={setErrorMessage}/>
       </ul>
 
     </div>
