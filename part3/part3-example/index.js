@@ -1,7 +1,20 @@
 const express = require('express')
+const cors = require('cors')
+
 const app = express()
+app.use(cors())
+
+const requestLogger = (request, response, next) => {
+    console.log('Method:', request.method)
+    console.log('Path:  ', request.path)
+    console.log('Body:  ', request.body)
+    console.log('---')
+    next()
+  }
 
 app.use(express.json())
+
+app.use(requestLogger)
 
 let notes = [
     {
@@ -81,7 +94,14 @@ app.post('/api/notes', (request, response) => {
     response.json(note)
 })
 
-const PORT = 3001
-app.listen(PORT, () => {
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  
+  app.use(unknownEndpoint)
+
+  const PORT = process.env.PORT || 3001
+  app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
-})
+  })
