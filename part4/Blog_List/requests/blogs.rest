@@ -1,0 +1,18 @@
+GET http://localhost:3001/
+###
+GET http://localhost:3001/api/blogs
+###
+GET http://localhost:3001/api/blog/3
+###
+DELETE http://localhost:3001/api/blog/3
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+
+{
+    "title": "The Shmorgessborg",
+    "author": "Ryan Daily",
+    "url": "www.mscmoney.com",
+    "likes": 83
+}
