@@ -2,16 +2,28 @@ GET http://localhost:3001/
 ###
 GET http://localhost:3001/api/blogs
 ###
-GET http://localhost:3001/api/blog/3
+GET http://localhost:3001/api/blogs/6161f7f0cfd9a78f77be7621
 ###
-DELETE http://localhost:3001/api/blog/3
+DELETE http://localhost:3001/api/blogs/6161f7f0cfd9a78f77be7621
 ###
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 
 {
-    "title": "The Shmorgessborg",
+    "title": "Tester",
+    "author": "Ryan Daily",
+    "url": "www.mscmoney.com",
+    "likes": 83
+}
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZvcmVzdHNjaHdydHoiLCJpZCI6IjYxNmI2ODdiYjhjMGM3MzEwNmM3YzdhMSIsImlhdCI6MTYzNDY5Njk0OX0.UcEjKysO8hB5zxkg-Ay9sYoFjpi-A8jVNO2cUvADcXE
+
+{
+    "title": "Tester",
     "author": "Ryan Daily",
     "url": "www.mscmoney.com",
     "likes": 83

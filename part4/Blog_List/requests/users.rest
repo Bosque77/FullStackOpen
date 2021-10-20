@@ -1,0 +1,20 @@
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+
+{
+    "username": "t",
+    "name": "Ryan Daily",
+    "password": "vballAllDay"
+}
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+
+{
+    "username": "forestschwrtz",
+    "name": "Ryan Daily",
+    "password": "vballAllDay"
+}
