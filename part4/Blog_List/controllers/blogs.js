@@ -9,6 +9,20 @@ blogsRouter.get('/', (request, response) => {
     })
 })
 
+blogsRouter.get('/user', middleware.userExtractor, async (request, response) => {
+    const current_user = request.user
+
+    let blogs = await Blog
+        .find({ user:current_user }).populate('user', { username: 1, name: 1 })
+
+    console.log(blogs)
+    response.json(blogs.map(blog => blog.toJSON()))
+
+    // Blog.find({ user:current_user }).populate('user',{ username: 1, name: 1 }).then(Blogs => {
+    //     response.json(Blogs.map(Blog => Blog.toJSON()))
+    // })
+})
+
 blogsRouter.get('/:id', (request, response, next) => {
     Blog.findById(request.params.id)
         .then(Blog => {
@@ -22,7 +36,6 @@ blogsRouter.get('/:id', (request, response, next) => {
 })
 
 blogsRouter.post('/', middleware.userExtractor ,async (request, response) => {
-    console.log('Inside blogs post')
 
     const body = request.body
     const user = request.user
@@ -74,7 +87,7 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
 
     const blog = await Blog.findById(request.params.id)
     if ( blog.user.toString() === user.id.toString() ) {
-        let returned_blog = await Blog.findByIdAndUpdate(request.params.id,updated_blog, {new:true})
+        let returned_blog = await Blog.findByIdAndUpdate(request.params.id,updated_blog, { new:true })
         response.json(returned_blog.toJSON())
     }else{
         response.status(401).end()

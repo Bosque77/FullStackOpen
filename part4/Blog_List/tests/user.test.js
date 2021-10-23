@@ -10,8 +10,8 @@ let salt_rounds = 10
 
 
 let createUsers = async() => {
-    let password_1 = await bcrypt.hash("Forest", salt_rounds)
-    let password_2 = await bcrypt.hash("password", salt_rounds)
+    let password_1 = await bcrypt.hash('Forest', salt_rounds)
+    let password_2 = await bcrypt.hash('password', salt_rounds)
     let data = [
         {   _id: '616b687bb8c0c73106c7c7a1',
             username: 'forestschwrtz',
@@ -97,4 +97,4 @@ describe('Posting new Users', ()=>{
 
 afterAll(() => {
     mongoose.connection.close()
-}) 
+})
