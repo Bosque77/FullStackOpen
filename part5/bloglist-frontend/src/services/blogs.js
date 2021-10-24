@@ -8,9 +8,26 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+const sortBlogs = (input_blogs) => {
+  function compare( a, b ) {
+      if ( a.likes < b.likes ){
+          return 1
+      }
+      if ( a.likes > b.likes ){
+          return -1
+      }
+      return 0
+  }
+
+  input_blogs.sort( compare )
+  return input_blogs
+}
+
+const getAll = async() => {
+  const response = await axios.get(baseUrl)
+  let returned_blogs = response.data
+  let sorted_blogs = sortBlogs(returned_blogs)
+  return sorted_blogs
 }
 
 const getUserBlogs = async () => {
@@ -43,4 +60,48 @@ const createBlog = async (blog) => {
 
 }
 
-export default { getAll, getUserBlogs, setToken, createBlog }
+const deleteBlog = async (blog_id) => {
+  console.log('inside deleteBlog')
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  let response = {}
+  let url = baseUrl.concat(`/${blog_id}`)
+  try{
+    response = await axios.delete(url,config)
+    response.status = 'SUCCESS'
+    response.message = 'Successfully deleted the blog'
+  }catch(error){
+    response.status = 'ERROR'
+    response.message = 'error deleting the blog'
+  }
+
+  return response
+
+
+
+}
+
+const putBlog = async (blog) => {
+  console.log('inside addBloglikes')
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  let response = {}
+  let url = baseUrl.concat(`/${blog.id}`)
+  console.log(url)
+  try{
+    response = await axios.put(url,blog,config)
+    response.status = 'SUCCESS'
+    response.message = 'Successfully created a new blog'
+  }catch(error){
+    response.status = 'ERROR'
+    response.message = 'error creating the blog'
+  }
+
+  return response
+}
+
+export default { getAll, getUserBlogs, setToken, createBlog, putBlog, deleteBlog }

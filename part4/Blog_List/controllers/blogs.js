@@ -3,8 +3,10 @@ const Blog = require('../models/blog')
 const middleware = require('../utils/middleware')
 
 
+
+
 blogsRouter.get('/', (request, response) => {
-    Blog.find({}).populate('user').then(Blogs => {
+    Blog.find({}).populate('user',{ username: 1, name: 1 }).then(Blogs => {
         response.json(Blogs.map(Blog => Blog.toJSON()))
     })
 })
@@ -24,7 +26,7 @@ blogsRouter.get('/user', middleware.userExtractor, async (request, response) => 
 })
 
 blogsRouter.get('/:id', (request, response, next) => {
-    Blog.findById(request.params.id)
+    Blog.findById(request.params.id).populate('user',{ username: 1, name: 1 })
         .then(Blog => {
             if (Blog) {
                 response.json(Blog.toJSON())
@@ -72,6 +74,9 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
 
 
 })
+
+
+
 
 blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
     const body = request.body

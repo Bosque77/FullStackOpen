@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import blogService from '../services/blogs'
+
 
 
 const CreateBlog = ({handleCreateBlog ,blogs,setBlogs, setStatus, setStatusMessage}) => {
