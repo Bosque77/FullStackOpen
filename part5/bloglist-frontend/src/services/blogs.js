@@ -10,13 +10,13 @@ const setToken = newToken => {
 
 const sortBlogs = (input_blogs) => {
   function compare( a, b ) {
-      if ( a.likes < b.likes ){
-          return 1
-      }
-      if ( a.likes > b.likes ){
-          return -1
-      }
-      return 0
+    if ( a.likes < b.likes ){
+      return 1
+    }
+    if ( a.likes > b.likes ){
+      return -1
+    }
+    return 0
   }
 
   input_blogs.sort( compare )
@@ -31,22 +31,20 @@ const getAll = async() => {
 }
 
 const getUserBlogs = async () => {
-    const config = {
-      headers: { Authorization: token },
-    }
+  const config = {
+    headers: { Authorization: token },
+  }
 
-    let destination_url = baseUrl+'/user'
-    const response = await axios.get(destination_url, config)
-    return response.data
+  let destination_url = baseUrl+'/user'
+  const response = await axios.get(destination_url, config)
+  return response.data
 }
 
 const createBlog = async (blog) => {
   const config = {
     headers: { Authorization: token },
   }
-
   let response = {}
-
   try{
     response = await axios.post(baseUrl,blog,config)
     response.status = 'SUCCESS'
@@ -55,9 +53,7 @@ const createBlog = async (blog) => {
     response.status = 'ERROR'
     response.message = 'error creating the blog'
   }
-  
   return response
-
 }
 
 const deleteBlog = async (blog_id) => {
@@ -76,11 +72,7 @@ const deleteBlog = async (blog_id) => {
     response.status = 'ERROR'
     response.message = 'error deleting the blog'
   }
-
   return response
-
-
-
 }
 
 const putBlog = async (blog) => {

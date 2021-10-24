@@ -22,7 +22,7 @@ const Blog = ({ blog,addBlogLike, deleteBlog,username }) => {
   }
 
 
-  const displayButton = () =>{
+  const displayButton = () => {
     if(display){
       return( <button onClick={toggleVisibility}> hide </button> )
     }else{
@@ -42,7 +42,7 @@ const Blog = ({ blog,addBlogLike, deleteBlog,username }) => {
       <div style={display_info}>
         <div> {blog.author} </div>
         <div> {blog.url} </div>
-        <div> {blog.likes} <button onClick={() => addBlogLike(blog)}>like</button> </div> 
+        <div> {blog.likes} <button onClick={() => addBlogLike(blog)}>like</button> </div>
         <button style={display_delete_button} onClick={onDeleteHandler}>Delete Blog</button>
       </div>
     </div>

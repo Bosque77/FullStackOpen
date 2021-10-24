@@ -31,15 +31,15 @@ const App = () => {
 
   const sortBlogs = (input_blogs) => {
     function compare( a, b ) {
-        if ( a.likes < b.likes ){
-            return 1
-        }
-        if ( a.likes > b.likes ){
-            return -1
-        }
-        return 0
+      if ( a.likes < b.likes ){
+        return 1
+      }
+      if ( a.likes > b.likes ){
+        return -1
+      }
+      return 0
     }
-  
+
     input_blogs.sort( compare )
     return input_blogs
   }
