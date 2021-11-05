@@ -29,6 +29,12 @@ app.use('/api/blogs',  blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
+// eslint-disable-next-line no-undef
+if (process.env.NODE_ENV === 'test') {
+    const testingRouter = require('./controllers/testing')
+    app.use('/api/testing', testingRouter)
+}
+
 // app.get('/', (request,response)=>{
 //     response.send('<h1>Hello World</h1>')
 // })

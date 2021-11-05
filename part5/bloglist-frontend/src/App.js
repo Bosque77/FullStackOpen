@@ -130,7 +130,7 @@ const App = () => {
     return (
       <div>
         <h2>blogs</h2>
-        <div>
+        <div id='blogs-list'>
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} addBlogLike={addBlogLike} username={user.username} deleteBlog={deleteBlog}/>
           )}
@@ -147,7 +147,7 @@ const App = () => {
   const userForm = () => {
     return (
       <div>
-        The user {user.name} is logged in <button type="submit" onClick={logoutHandler}>logout</button>
+        The user {user.name} is logged in <button id="logout-button" type="submit" onClick={logoutHandler}>logout</button>
       </div>
     )
   }

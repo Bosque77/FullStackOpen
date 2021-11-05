@@ -22,17 +22,17 @@ const CreateBlog = ({ handleCreateBlog }) => {
       <form onSubmit={onSubmit}>
         <div>
                     Title:
-          <input type="text" value={blog_title} name="Title" onChange={({ target }) => setBlogTitle(target.value)} />
+          <input type="text" id="blog-title" value={blog_title} name="Title" onChange={({ target }) => setBlogTitle(target.value)} />
         </div>
         <div>
                     Author:
-          <input type="text" value={author} name="Author" onChange = {({ target }) => setAuthor(target.value)}/>
+          <input type="text" id="blog-author" value={author} name="Author" onChange = {({ target }) => setAuthor(target.value)}/>
         </div>
         <div>
                     url:
-          <input type="text" value={url} name="Url" onChange ={({ target }) => setUrl(target.value)}/>
+          <input type="text" id="blog-url" value={url} name="Url" onChange ={({ target }) => setUrl(target.value)}/>
         </div>
-        <button type="submit">Create Blog</button>
+        <button id="create-blog" type="submit">Create Blog</button>
       </form>
     </div>
   )
