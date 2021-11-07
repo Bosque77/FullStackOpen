@@ -19,7 +19,7 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const anecdoteReducer = (state = initialState, action) => {
+const anecdoteReducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
   let new_state = []
@@ -33,11 +33,11 @@ const anecdoteReducer = (state = initialState, action) => {
       orderAnecdotes(new_state)
       return new_state
     case 'CREATE ANECDOTE':
-      console.log('inside add anecdote')
-      const new_anecdote = asObject(action.data.content)
-      new_state = [...state, new_anecdote]
-      console.log(new_state)
+      new_state = [...state, action.data]
       return new_state
+    case 'INIT':
+      console.log('inside init')
+      return action.data
     default: // if none of the above matches then the code comes here
       return state
   }
@@ -68,10 +68,17 @@ export const addVote = (id) => {
 }
 
 
-export const createAnecdote = (content) => {
+export const createAnecdote = (data) => {
   return {
     type: 'CREATE ANECDOTE',
-    data: {content}
+    data
+  }
+}
+
+export const initializeAnecdotes = (data) => {
+  return {
+    type: 'INIT',
+    data
   }
 }
 
