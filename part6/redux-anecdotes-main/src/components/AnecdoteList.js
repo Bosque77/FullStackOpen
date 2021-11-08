@@ -1,6 +1,6 @@
 import React from "react";
 import { addVote } from '../reducers/anecdoteReducer'
-import {createMessage, removeMessage} from '../reducers/notificationReducer'
+import {setNotification} from '../reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
 const AnecdoteList = () => {
@@ -14,21 +14,24 @@ const AnecdoteList = () => {
             return filtered_anecdotes
         }
     })
+
     const dispatch = useDispatch()
 
-    const vote = (id) => {
+    const vote = async (id) => {
         console.log('vote', id)
-        dispatch(addVote(id))
         let selected_anecdote = anecdotes.find(anecdote => anecdote.id === id)
+        await dispatch(addVote(selected_anecdote))
         let message = selected_anecdote.content
         let notification = `A vote was added to the anecdote '${message}'`
-        setNotification(notification)
+        console.log('about to set notifcation')
+        dispatch(setNotification('test',3))
+        // dispatch(setNotification(notification,3))
     }
 
-    const setNotification = (notification) => {
-        dispatch(createMessage(notification))
-        setTimeout(() => {dispatch(removeMessage())}, 3000);
-    }
+    // const setNotification = (notification) => {
+    //     dispatch(createMessage(notification))
+    //     setTimeout(() => {dispatch(removeMessage())}, 3000);
+    // }
 
     return (
         anecdotes.map(anecdote =>

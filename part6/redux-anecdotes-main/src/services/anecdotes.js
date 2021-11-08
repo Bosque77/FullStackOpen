@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+
 const baseUrl = 'http://localhost:3001/anecdotes'
 
 
@@ -25,4 +26,22 @@ const createNew = async (content) => {
   return response.data
 }
 
-export default { getAll, createNew }
+
+const getAnecdote = async (id) => {
+  console.log('inside getAnecdote')
+  let url = baseUrl + `/${id}`
+  const response = await axios.get(url)
+  console.log(response.data)
+  return response.data
+}
+
+const putAnecdote = async (anecdote) => {
+  console.log('inside putAnecdote')
+  let id = anecdote.id
+  let url = baseUrl + `/${id}`
+  const response = await axios.put(url, anecdote)
+  return response.data
+}
+
+
+export default { getAll, createNew, getAnecdote, putAnecdote }
