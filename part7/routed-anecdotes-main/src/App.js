@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Notification from './components/Notification'
+import { useField } from './hooks'
 
 import {
   BrowserRouter as Router,
@@ -97,9 +98,21 @@ const Footer = () => (
 
 const CreateNew = (props) => {
 
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content = useField('content')
+  const author = useField('author')
+  const info = useField('info')
+
+  let content_input = content.input_variables
+  let author_input = author.input_variables
+  let info_input = info.input_variables
+
+
+
+
+
+  // const [content, setContent] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [info, setInfo] = useState('')
 
   const history = useHistory()
 
@@ -107,12 +120,16 @@ const CreateNew = (props) => {
   const handleSubmit = (e) => {
     console.log('inside event handler for create new anecdote')
     e.preventDefault()
-    props.addNew({
-      content,
-      author,
-      info,
-      votes: 0
-    })
+    props.addNew(
+      {
+        content: content_input.value,
+        author: author_input.value,
+        info: info_input.value,
+        votes: 0,
+
+      }
+
+    )
     history.push('/')
     setNotification('A anecdote was added to the list')
     
@@ -123,24 +140,32 @@ const CreateNew = (props) => {
     setTimeout(() => {props.setNotification('')}, 3000);
 }
 
+const resetValues = () => {
+  content.reset_function('')
+  author.reset_function('')
+  info.reset_function('')
+}
+
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content_input} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author_input} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input {...info_input} />
         </div>
-        <button>create</button>
+        <button type="submit" >create</button>
+        <button type="button" onClick={resetValues}>reset</button>
       </form>
+      
     </div>
   )
 
