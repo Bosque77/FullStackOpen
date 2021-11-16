@@ -8,11 +8,17 @@ import Togglable from './components/Toggable'
 import loginService from './services/login'
 import blogService from './services/blogs'
 import { setNotification } from './reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
+import { getBlogs, addBlog, setBlogs, deleteBlog } from './reducers/blogReducer'
+import { useSelector, useDispatch } from 'react-redux'
 
 const App = () => {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
+
+  const blogs = useSelector(state => {
+    return state.blogs
+  })
+
+  // const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   // const [status_message, setStatusMessage] = useState(null)
   const display_with_user = { display: user ? '' : 'none' }
@@ -27,23 +33,24 @@ const App = () => {
       setUser(cached_user)
       blogService.setToken(cached_user.token)
     }
-    blogService.getAll().then( returned_blogs => setBlogs(returned_blogs))
+    dispatch(getBlogs())
+    // blogService.getAll().then( returned_blogs => dispatch(setBlogs(returned_blogs)))
 
   }, [])
 
 
   const sortBlogs = (input_blogs) => {
-    function compare( a, b ) {
-      if ( a.likes < b.likes ){
+    function compare(a, b) {
+      if (a.likes < b.likes) {
         return 1
       }
-      if ( a.likes > b.likes ){
+      if (a.likes > b.likes) {
         return -1
       }
       return 0
     }
 
-    input_blogs.sort( compare )
+    input_blogs.sort(compare)
     return input_blogs
   }
 
@@ -54,23 +61,12 @@ const App = () => {
       window.localStorage.setItem('user', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      dispatch(setNotification('User Successfully Logged In',3))
+      dispatch(setNotification('User Successfully Logged In', 3))
     } catch (exception) {
-      dispatch(setNotification('User Login was Unsuccessful',3))
+      dispatch(setNotification('User Login was Unsuccessful', 3))
     }
 
   }
-
-  // const createStatus = (message) => {
-  //   setStatusMessage(message)
-  //   const timeId = setTimeout(() => {
-  //     setStatusMessage(null)
-  //   }, 5000)
-
-  //   return () => {
-  //     clearTimeout(timeId)
-  //   }
-  // }
 
 
   const handleCreateBlog = async (blog_title, author, url) => {
@@ -87,12 +83,13 @@ const App = () => {
     if (response.status === 'SUCCESS') {
       console.log('successfully created a new blog')
       let new_blog = response.data
+      dispatch(addBlog(new_blog))
 
-      let new_blogs = blogs.concat(new_blog)
-      setBlogs(new_blogs)
+      // let new_blogs = blogs.concat(new_blog)
+      // setBlogs(new_blogs)
       togglable1.current.toggleVisibility()
     }
-    dispatch(setNotification(response.message,3))
+    dispatch(setNotification(response.message, 3))
 
   }
 
@@ -122,7 +119,8 @@ const App = () => {
     let returned_blog = response.data
     let new_blog_list = replaceBlog(returned_blog)
     let sorted_blogs = sortBlogs(new_blog_list)
-    setBlogs(sorted_blogs)
+    dispatch(setBlogs(sorted_blogs))
+    // setBlogs(sorted_blogs)
   }
 
 
@@ -133,7 +131,7 @@ const App = () => {
         <h2>blogs</h2>
         <div id='blogs-list'>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} addBlogLike={addBlogLike} username={user.username} deleteBlog={deleteBlog}/>
+            <Blog key={blog.id} blog={blog} addBlogLike={addBlogLike} username={user.username} deleteBlog={deleteBlog} />
           )}
         </div>
       </div>
@@ -153,16 +151,10 @@ const App = () => {
     )
   }
 
-  const deleteBlog = async (blog_id) => {
-    let response = await blogService.deleteBlog(blog_id)
-    if (response.status === 'SUCCESS') {
-      console.log('successfully deleted the blog')
-      let new_blogs = await blogService.getAll()
-      setBlogs(new_blogs)
-    }
-    dispatch(setNotification(response.message,3))
-
-  }
+  // const deleteBlogID= async (blog_id) => {
+  //   dispatch(deleteBlog(blog_id))
+  //   dispatch(setNotification('Successfully Deleted a blog', 3))
+  // }
 
   return (
     <div>
