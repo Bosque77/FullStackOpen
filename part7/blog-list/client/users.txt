@@ -1,0 +1,13 @@
+let password_1 = await bcrypt.hash('Forest', salt_rounds)
+let password_2 = await bcrypt.hash('password', salt_rounds)
+let data = [
+    {   _id: '616b687bb8c0c73106c7c7a1',
+        username: 'forestschwrtz',
+        name: 'Bosque77',
+        passwordHash: password_1,
+    },
+    {
+        username: 'bobbybrown',
+        name: 'heartbreakers2',
+        passwordHash: password_2,
+    }
