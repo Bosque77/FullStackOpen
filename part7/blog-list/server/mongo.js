@@ -1,54 +1,37 @@
+const helper = require('./utils/db.helper')
+const Blog = require('./models/blog')
+const User = require('./models/user')
 const mongoose = require('mongoose')
 
 
 const url =
-  `mongodb+srv://forest_schwartz:Bosquetr33s@cluster0.64ak0.mongodb.net/blog-app?retryWrites=true&w=majority`
+  'mongodb+srv://forest_schwartz:Bosquetr33s@cluster0.64ak0.mongodb.net/blog-app?retryWrites=true&w=majority'
 
 mongoose.connect(url)
 
-const blogSchema = new mongoose.Schema({
-    title: String,
-    author: String,
-    url: String,
-    likes: Number
-})
+const initDB = async() => {
+    let initial_users = await helper.users
+    console.log(initial_users)
+    await User.deleteMany({})
+  
+    const userObjects = initial_users.map(user => new User(user))
+    let promiseArray = userObjects.map(user => user.save())
+    await Promise.all(promiseArray)
 
-const Blog = mongoose.model('Blog', blogSchema)
-
-const blog_1 = new Blog({
-    "title": "The Big Bad Wolf",
-    "author": "Forest Schwartz",
-    "url": "www.bigbadworld.com",
-    "likes": 23
-})
-
-blog_1.save().then(result => {
-  console.log('note saved!')
-}).catch(error => console.log(error))
-.then(result =>{
-    const blog_2 = new Blog({
-        "title": "The Heckler",
-        "author": "Ryan Smith",
-        "url": "www.Heckle_My_Shmeckle.com",
-        "likes": 15000
-    })
-    
-    blog_2.save().then(result => {
-      console.log('note saved!')
-    }).catch(error => console.log(error))
-    .then(
-        Blog.find({}).then(result => {
-            result.forEach(blog => {
-              console.log(blog)
-            })
-            mongoose.connection.close()
-          })
-    )
-
+  
+    await Blog.deleteMany({})
+ 
+    let blogs = helper.blogs
+    let blogObjects = blogs.map(blog => new Blog(blog))
+    promiseArray = blogObjects.map(blog => blog.save())
+    await Promise.all(promiseArray)
+    mongoose.connection.close()
 }
 
 
-)
+initDB()
+
+
 
 
 

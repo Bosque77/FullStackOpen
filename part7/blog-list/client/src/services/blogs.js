@@ -96,4 +96,29 @@ const putBlog = async (blog) => {
   return response
 }
 
-export default { getAll, getUserBlogs, setToken, createBlog, putBlog, deleteBlog }
+const addComment = async (blog, comment) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  console.log('inside blog service add comment')
+  console.log(comment)
+
+  let data = { comment: comment }
+
+  let response = {}
+  let url = baseUrl.concat(`/${blog.id}/comments`)
+  try{
+    response = await axios.post(url,data,config)
+    console.log(response)
+    response.status = 'SUCCESS'
+    response.message = 'Successfully added a blog comment'
+  }catch(error){
+    response.status = 'ERROR'
+    response.message = 'error adding the blog comment'
+  }
+
+  return response
+
+}
+
+export default { getAll, getUserBlogs, setToken, createBlog, putBlog, deleteBlog, addComment }

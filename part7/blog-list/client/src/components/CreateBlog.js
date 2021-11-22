@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 
 
 const CreateBlog = ({ handleCreateBlog }) => {
+  console.log('inside Create Blog Component')
   const [blog_title, setBlogTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')

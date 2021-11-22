@@ -24,14 +24,8 @@ const AnecdoteList = () => {
         let message = selected_anecdote.content
         let notification = `A vote was added to the anecdote '${message}'`
         console.log('about to set notifcation')
-        dispatch(setNotification('test',3))
-        // dispatch(setNotification(notification,3))
+        dispatch(setNotification(notification,3))
     }
-
-    // const setNotification = (notification) => {
-    //     dispatch(createMessage(notification))
-    //     setTimeout(() => {dispatch(removeMessage())}, 3000);
-    // }
 
     return (
         anecdotes.map(anecdote =>

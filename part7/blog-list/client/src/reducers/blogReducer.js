@@ -1,7 +1,7 @@
 import blogService from '../services/blogs'
 
 
-const blogReducer = (state = [], action) => {
+const blogReducer = (state = null, action) => {
   let new_state = []
   switch (action.type) {
   case 'GET_BLOGS':
@@ -64,6 +64,7 @@ export const setBlogs = (blogs) => {
     })
   }
 }
+
 
 
 

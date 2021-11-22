@@ -60,6 +60,21 @@ blogsRouter.post('/', middleware.userExtractor ,async (request, response) => {
     response.json(returned_blog.toJSON())
 })
 
+
+blogsRouter.post('/:id/comments', async (request,response) => {
+    console.log('inside blogsrouter post')
+    const body = request.body
+
+    console.log(body)
+    const blog = await Blog.findById(request.params.id)
+    let comment = body.comment
+    blog.comments.push(comment)
+    let returned_blog = await Blog.findByIdAndUpdate(request.params.id,blog, { new:true })
+    await returned_blog.populate('user',{username: 1, name: 1})
+    response.json(returned_blog.toJSON())
+
+})
+
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
     console.log('inside delete blog')
     const user = request.user
@@ -78,32 +93,25 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
 
 
 
-
+// THIS PIECE OF CODE IS NOT GREAT BEACAUSE ANY PUT REQUEST JUST INCREASES THE LIKE ON THE BLOG
+// PROBABLY NEED TO IMPLEMENT A SEPARTE SERVER SIDE FUNCTION FOR DOING THIS IF I WANTED TO DO IT CORRECTLY
 blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
-    const body = request.body
-    const user = request.user
-
-    console.log(body)
-
-    // let updated_blog = { ...body }
-
-    const updated_blog = {
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        likes: body.likes,
-        user: user.id
-    }
+    // const body = request.body
+    // const user = request.user
 
 
     const blog = await Blog.findById(request.params.id)
-    if ( blog.user.toString() === user.id.toString() ) {
-        let returned_blog = await Blog.findByIdAndUpdate(request.params.id,updated_blog, { new:true })
-        await returned_blog.populate('user',{username: 1, name: 1})
-        response.json(returned_blog.toJSON())
-    }else{
-        response.status(401).end()
-    }
+    blog.likes = blog.likes+1
+    let returned_blog = await Blog.findByIdAndUpdate(request.params.id,blog, { new:true })
+    await returned_blog.populate('user',{username: 1, name: 1})
+    response.json(returned_blog.toJSON())
+    // if ( blog.user.toString() === user.id.toString() ) {
+    //     let returned_blog = await Blog.findByIdAndUpdate(request.params.id,updated_blog, { new:true })
+    //     await returned_blog.populate('user',{username: 1, name: 1})
+    //     response.json(returned_blog.toJSON())
+    // }else{
+    //     response.status(401).end()
+    // }
 })
 
 module.exports = blogsRouter
