@@ -1,0 +1,14 @@
+GET http://localhost:3001/
+###
+GET http://localhost:3001/api/patients
+
+###
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "title": "Tester",
+    "author": "Ryan Daily",
+    "url": "www.mscmoney.com",
+    "likes": 83
+}
