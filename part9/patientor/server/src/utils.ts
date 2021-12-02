@@ -12,12 +12,13 @@ const toNewPatientEntry = ({ name, occupation, gender, ssn, dateOfBirth } : Fiel
         occupation: parseData(occupation),
         gender: parseGender(gender),
         ssn: parseData(ssn),
-        dateOfBirth: parseData(dateOfBirth)
+        dateOfBirth: parseData(dateOfBirth),
+        entries: []
     };
 
-    console.log(newEntry);
     return newEntry;
 };
+
 
 
 const isString = (text: unknown): text is string => {

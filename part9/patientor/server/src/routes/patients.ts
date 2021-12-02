@@ -1,6 +1,6 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import {NonSensitivePatientEntry} from "../types";
+import {NonSensitivePatientEntry, Patient} from "../types";
 import toNewPatientEntry from '../utils';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -13,6 +13,11 @@ patient_router.get('/', (_req, res) => {
 });
 
 
+patient_router.get('/:id', (req, res) => {
+
+  const patient:Patient | undefined = patientService.getPatientById(req.params.id);
+  res.send(patient);
+});
 
 patient_router.post('/', (req, res) => {
   console.log('inside patient post request');
