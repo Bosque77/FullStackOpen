@@ -1,8 +1,8 @@
 // Formik x React Native example
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Formik} from 'formik';
-import { Box, Button  } from 'native-base'
+import { Formik } from 'formik';
+import { Box, Button } from 'native-base'
 import * as yup from 'yup';
 import FormikTextInput from './FormikTextInput';
 
@@ -16,6 +16,11 @@ const validationSchema = yup.object().shape({
 
 // });
 
+
+const onSubmit = (values) => {
+  console.log(values);
+};
+
 const SignIn = () => {
 
 
@@ -26,14 +31,21 @@ const SignIn = () => {
           username: 'Username',
           password: 'Password',
         }}
-        onSubmit={values => console.log(values)}
+        onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
-        <Box alignItems="center">
-          <FormikTextInput name="username" placeholder="Username" />
-          <FormikTextInput name="password" placeholder="Password" />
-          <Button style={{marginTop: 15}} onPress={() => console.log("hello world")}>Submit</Button>
-        </Box>
+
+        {({ handleSubmit }) => {
+          return (
+            <Box alignItems="center">
+              <FormikTextInput name="username" placeholder="Username" />
+              <FormikTextInput name="password" placeholder="Password" />
+              <Button style={{ marginTop: 15 }} onPress={handleSubmit}>Submit</Button>
+            </Box>
+          )
+
+        }}
+
       </Formik>
     </>
   )
