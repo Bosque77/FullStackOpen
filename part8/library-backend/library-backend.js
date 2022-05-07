@@ -96,7 +96,10 @@ const resolvers = {
                 return await Book.find({})
             }
         },
-        allAuthors: async () => await Author.find({})
+        allAuthors: async () => await Author.find({}),
+        me: (root, args, context) => {
+            return context.currentUser
+            }
     },
     Mutation: {
         createUser: async(root, args) => {
@@ -113,6 +116,7 @@ const resolvers = {
             
         },
         login: async(root, args) => {
+            console.log('inside login mutation')
             const {username, password} = args
             const user = await User.findOne({username})
             const passwordCorrect = user === null ? false: await bcrypt.compare(password, user.passwordHash)
@@ -126,33 +130,39 @@ const resolvers = {
                 favoriteGenre: user.favoriteGenre
             }
 
-            const token = jwt.sign(userForToken, JWT_SECRET)
+            const token = {value: jwt.sign(userForToken, JWT_SECRET)}
             return token
         },
-        addBook: async (root, args) => {
+        addBook: async (root, args, context) => {
 
-            let author = await Author.findOne({ name: args.author })
-            if (!author) {
-                author = new Author({ name: args.author })
+
+            if(context.currentUser){
+                let author = await Author.findOne({ name: args.author })
+                if (!author) {
+                    author = new Author({ name: args.author })
+                    try {
+                        await author.save()
+                    } catch (error) {
+                        throw new UserInputError(error.message)
+    
+                    }
+    
+                }
+                const new_book = new Book({ title: args.title, published: args.published, author: author._id, genres: args.genres })
+    
                 try {
-                    await author.save()
+                    await new_book.save()
                 } catch (error) {
                     throw new UserInputError(error.message)
-
                 }
-
-            }
-            const new_book = new Book({ title: args.title, published: args.published, author: author._id, genres: args.genres })
-
-            try {
-                await new_book.save()
-            } catch (error) {
-                throw new UserInputError(error.message)
+    
+                return new_book
             }
 
-            return new_book
+
+
         },
-        editAuthor: async (root, args) => {
+        editAuthor: async (root, args, context) => {
             const original_author = await Author.findOne({ name: args.name })
             const updated_author = original_author.overwrite({ name: args.name, born: args.setBornTo })
             await updated_author.save()
@@ -179,6 +189,20 @@ const resolvers = {
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    context: async ({ req }) => {
+        const auth = req ? req.headers.authorization : null
+        console.log(auth)
+        if (auth && auth.toLowerCase().startsWith('bearer ')) {
+            const decodedToken = jwt.verify(
+                auth.substring(7), JWT_SECRET
+              )
+          console.log('decoded the token')
+          console.log(decodedToken)
+          const currentUser = await User.findById(decodedToken.id)
+          console.log(currentUser)
+          return { currentUser }
+        }
+      }
 })
 
 server.listen().then(({ url }) => {
