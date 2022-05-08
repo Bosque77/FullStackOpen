@@ -1,6 +1,5 @@
 // Formik x React Native example
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Formik } from 'formik';
 import { Box, Button } from 'native-base'
 import * as yup from 'yup';
